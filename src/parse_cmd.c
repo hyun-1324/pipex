@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:04:55 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 14:06:09 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 21:00:09 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,20 @@ void	replace_space_within_quotes(char *raw_cmd)
 			*raw_cmd = 127;
 		raw_cmd++;
 	}
+}
+
+char	**parse_cmd(char *raw_cmd)
+{
+	char	**argv;
+
+	if (*raw_cmd == '\0')
+		return (ft_putstr_fd("command not found\n"\
+			, STDERR_FILENO), exit(127), NULL);
+	replace_space_within_quotes(raw_cmd);
+	argv = ft_split(raw_cmd, ' ');
+	if (!argv)
+		return (ft_putstr_fd("tokenization failed\n"\
+			, STDERR_FILENO), exit(EXIT_FAILURE), NULL);
+	cleanup_quotes_and_restore_space(argv);
+	return (argv);
 }

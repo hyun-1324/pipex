@@ -6,11 +6,39 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 19:08:45 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 20:59:49 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	validate_quotes(char **argv)
+{
+	int	in_single;
+	int	in_double;
+	int	i;
+
+	in_single = 0;
+	in_double = 0;
+	i = 0;
+	while (*argv)
+	{
+		while ((*argv)[i])
+		{
+			if ((*argv)[i] == '\'' && !in_double)
+				in_single = !in_single;
+			else if ((*argv)[i] == '"' && !in_single)
+				in_double = !in_double;
+			i++;
+		}
+		if (in_single || in_double)
+			return (ft_putstr_fd("unmatched quote\n", STDERR_FILENO), exit(1));
+		in_single = 0;
+		in_double = 0;
+		i = 0;
+		argv++;
+	}
+}
 
 void	ft_free_split(char **arr)
 {
@@ -45,14 +73,7 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	char	**argv;
 	char	*path;
 
-	if (*raw_cmd == '\0')
-		exit(EXIT_FAILURE);
-	replace_space_within_quotes(raw_cmd);
-	argv = ft_split(raw_cmd, ' ');
-	if (!argv)
-		return (ft_putstr_fd("tokenization failed\n"\
-			, STDERR_FILENO), exit(EXIT_FAILURE));
-	cleanup_quotes_and_restore_space(argv);
+	argv = parse_cmd(raw_cmd);
 	path = parse_cmd_path(argv, pipex->envp);
 	if (!path)
 		return (ft_free_split(argv), ft_putstr_fd("command not found\n"\
