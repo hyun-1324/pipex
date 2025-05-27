@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:04:55 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 21:00:09 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 21:38:40 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	**parse_cmd(char *raw_cmd)
 
 	if (*raw_cmd == '\0')
 		return (ft_putstr_fd("command not found\n"\
-			, STDERR_FILENO), exit(127), NULL);
+			, STDERR_FILENO), exit(126), NULL);
 	replace_space_within_quotes(raw_cmd);
 	argv = ft_split(raw_cmd, ' ');
 	if (!argv)

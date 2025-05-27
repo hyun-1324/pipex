@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 16:57:57 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 21:42:43 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ static char	*check_possible_candidates(char **dirs, char **cmd)
 		{
 			ft_free_split(cmd);
 			ft_free_split(dirs);
-			ft_putstr_fd("memory allocation failed while building command path\n"\
-				, STDERR_FILENO);
+			ft_putstr_fd("memory allocation failed building command path\n",
+				STDERR_FILENO);
 			exit(EXIT_FAILURE);
 		}
 		if (access(candidate, X_OK) == 0)
@@ -104,7 +104,8 @@ char	*parse_cmd_path(char **cmd, char **envp)
 		{
 			path = ft_strdup(*cmd);
 			if (!path)
-				return (ft_free_split(cmd), ft_putstr_fd("failed memory allocation for path\n", \
+				return (ft_free_split(cmd), \
+				ft_putstr_fd("failed memory allocation for path\n", \
 					STDERR_FILENO), exit(EXIT_FAILURE), NULL);
 			return (path);
 		}
