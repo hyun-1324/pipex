@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 15:57:51 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 16:57:57 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 	return (result);
 }
 
-static char	*check_possible_candidates(char **dirs, const char *cmd)
+static char	*check_possible_candidates(char **dirs, char **cmd)
 {
 	char	*candidate;
 	int		i;
@@ -55,9 +55,10 @@ static char	*check_possible_candidates(char **dirs, const char *cmd)
 	i = 0;
 	while (dirs[i])
 	{
-		candidate = ft_strjoin_three(dirs[i], "/", cmd);
+		candidate = ft_strjoin_three(dirs[i], "/", *cmd);
 		if (!candidate)
 		{
+			ft_free_split(cmd);
 			ft_free_split(dirs);
 			ft_putstr_fd("memory allocation failed while building command path\n"\
 				, STDERR_FILENO);
@@ -83,11 +84,12 @@ static char	*get_path_from_envp(char **cmd, char **envp)
 	dirs = ft_split(path_env, ':');
 	if (!dirs)
 	{
+		ft_free_split(cmd);
 		ft_putstr_fd("memory allocation failed while splitting PATH\n", \
 			STDERR_FILENO);
 		exit(EXIT_FAILURE);
 	}
-	path = check_possible_candidates(dirs, *cmd);
+	path = check_possible_candidates(dirs, cmd);
 	ft_free_split(dirs);
 	return (path);
 }
@@ -102,7 +104,7 @@ char	*parse_cmd_path(char **cmd, char **envp)
 		{
 			path = ft_strdup(*cmd);
 			if (!path)
-				return (ft_putstr_fd("failed memory allocation for path\n", \
+				return (ft_free_split(cmd), ft_putstr_fd("failed memory allocation for path\n", \
 					STDERR_FILENO), exit(EXIT_FAILURE), NULL);
 			return (path);
 		}

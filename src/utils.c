@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 14:16:45 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 16:15:58 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	path = parse_cmd_path(argv, pipex->envp);
 	if (!path)
 		return (ft_free_split(argv), ft_putstr_fd("command not found\n"\
-			, STDERR_FILENO), exit(EXIT_FAILURE));
+			, STDERR_FILENO), exit(127));
 	execve(path, argv, pipex->envp);
 	ft_putstr_fd("execve failed\n", STDERR_FILENO);
 	free(path);

@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:00:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 13:06:03 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 16:44:28 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static void	run_second_child(t_pipex *pipex)
 		{
 			ft_putstr_fd("failed to open last file\n", STDERR_FILENO);
 			close(pipex->pipe[0]);
-			exit(STDERR_FILENO);
+			exit(EXIT_FAILURE);
 		}
 		redirect_io(pipex->pipe[0], pipex->outfile_fd);
 		execute_cmd(pipex, pipex->argv[CMD2]);
