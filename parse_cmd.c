@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:04:55 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 11:34:14 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 14:06:09 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,34 +37,34 @@ static void	replace_del_with_space(char *str)
 	}
 }
 
-void	cleanup_quotes_and_restore(char **tokens)
+void	cleanup_quotes_and_restore_space(char **argv)
 {
 	size_t	i;
 
 	i = 0;
-	while (tokens[i])
+	while (argv[i])
 	{
-		remove_outer_quotes(tokens[i]);
-		replace_del_with_space(tokens[i]);
+		remove_outer_quotes(argv[i]);
+		replace_del_with_space(argv[i]);
 		i++;
 	}
 }
 
-void	replace_space_within_quotes(char *raw)
+void	replace_space_within_quotes(char *raw_cmd)
 {
 	int	in_single;
 	int	in_double;
 
 	in_single = 0;
 	in_double = 0;
-	while (*raw)
+	while (*raw_cmd)
 	{
-		if (*raw == '\'' && !in_double)
+		if (*raw_cmd == '\'' && !in_double)
 			in_single = !in_single;
-		else if (*raw == '"' && !in_single)
+		else if (*raw_cmd == '"' && !in_single)
 			in_double = !in_double;
-		else if (*raw == ' ' && (in_single || in_double))
-			*raw = 127;
-		raw++;
+		else if (*raw_cmd == ' ' && (in_single || in_double))
+			*raw_cmd = 127;
+		raw_cmd++;
 	}
 }

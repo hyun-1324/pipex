@@ -6,11 +6,22 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 11:12:21 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 14:17:16 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static char	*get_path_value(char **envp)
+{
+	while (*envp)
+	{
+		if (ft_strncmp(*envp, "PATH=", 5) == 0)
+			return (*envp + 5);
+		envp++;
+	}
+	return (NULL);
+}
 
 static char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 {
@@ -36,17 +47,6 @@ static char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 	return (result);
 }
 
-static char	*get_path_value(char **envp)
-{
-	while (*envp)
-	{
-		if (ft_strncmp(*envp, "PATH=", 5) == 0)
-			return (*envp + 5);
-		envp++;
-	}
-	return (NULL);
-}
-
 static char	*check_possible_candidates(char **dirs, const char *cmd)
 {
 	char	*candidate;
@@ -57,7 +57,12 @@ static char	*check_possible_candidates(char **dirs, const char *cmd)
 	{
 		candidate = ft_strjoin_three(dirs[i], "/", cmd);
 		if (!candidate)
-			return (NULL);
+		{
+			ft_free_split(dirs);
+			ft_putstr_fd("memory allocation failed while building command path\n"\
+				, STDERR_FILENO);
+			exit(EXIT_FAILURE);
+		}
 		if (access(candidate, X_OK) == 0)
 			return (candidate);
 		free(candidate);
@@ -66,28 +71,44 @@ static char	*check_possible_candidates(char **dirs, const char *cmd)
 	return (NULL);
 }
 
-char	*parse_cmd_path(const char *cmd, char **envp)
+static char	*get_path_from_envp(const char **cmd, char **envp)
 {
+	char	*path;
 	char	*path_env;
 	char	**dirs;
-	char	*path;
 
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		else
-			return (NULL);
-	}
 	path_env = get_path_value(envp);
 	if (!path_env)
 		return (NULL);
 	dirs = ft_split(path_env, ':');
 	if (!dirs)
-		return (NULL);
-	path = check_possible_candidates(dirs, cmd);
+	{
+		ft_putstr_fd("memory allocation failed while splitting PATH\n", \
+			STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
+	path = check_possible_candidates(dirs, *cmd);
 	ft_free_split(dirs);
-	if (!path)
-		return (NULL);
+	return (path);
+}
+
+char	*parse_cmd_path(const char **cmd, char **envp)
+{
+	char	*path;
+
+	if (ft_strchr(*cmd, '/'))
+	{
+		if (access(*cmd, X_OK) == 0)
+		{
+			path = ft_strdup(*cmd);
+			if (!path)
+				return (ft_putstr_fd("failed memory allocation for path\n", \
+					STDERR_FILENO), exit(EXIT_FAILURE), NULL);
+			return (path);
+		}
+		else
+			return (NULL);
+	}
+	path = get_path_from_envp(cmd, envp);
 	return (path);
 }

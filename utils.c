@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 11:12:26 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 14:16:45 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	replace_space_within_quotes(raw_cmd);
 	argv = ft_split(raw_cmd, ' ');
 	if (!argv)
-		return (ft_putstr_fd("tokenization failed"\
+		return (ft_putstr_fd("tokenization failed\n"\
 			, STDERR_FILENO), exit(EXIT_FAILURE));
-	cleanup_quotes_and_restore(argv);
-	path = parse_cmd_path(argv[0], pipex->envp);
+	cleanup_quotes_and_restore_space(argv);
+	path = parse_cmd_path(argv, pipex->envp);
 	if (!path)
-		return (ft_free_split(argv), ft_putstr_fd("command not found", \
-			STDERR_FILENO), exit(EXIT_FAILURE));
+		return (ft_free_split(argv), ft_putstr_fd("command not found\n"\
+			, STDERR_FILENO), exit(EXIT_FAILURE));
 	execve(path, argv, pipex->envp);
-	ft_putstr_fd("execve failed", STDERR_FILENO);
+	ft_putstr_fd("execve failed\n", STDERR_FILENO);
 	free(path);
 	ft_free_split(argv);
 	if (errno == EISDIR)
