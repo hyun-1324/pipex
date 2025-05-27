@@ -6,62 +6,63 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/26 14:51:20 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 11:12:26 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	redirect(int in, int out)
+void	ft_free_split(char **arr)
 {
-	if (dup2(in, STDIN_FILENO) < 0)
+	size_t	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		close(in);
-		close(out);
-		ft_putstr_fd("failed to dup2 (stdin)", STDERR_FILENO);
-		exit(EXIT_FAILURE);
+		free(arr[i]);
+		i++;
 	}
-	if (dup2(out, STDOUT_FILENO) < 0)
-	{
-		close(in);
-		close(out);
-		ft_putstr_fd("failed to dup2 (stdout)", STDERR_FILENO);
-		exit(EXIT_FAILURE);
-	}
-	close(in);
-	close(out);
+	free(arr);
 }
 
-void	replace_space_within_quotes(char *cmd)
+void	redirect_io(int in_fd, int out_fd)
 {
-	int	in_single;
-	int	in_double;
-
-	in_single = 0;
-	in_double = 0;
-	while (*cmd)
+	if (dup2(in_fd, STDIN_FILENO) < 0 || dup2(out_fd, STDOUT_FILENO) < 0)
 	{
-		if (*cmd == '\'' && !in_double)
-			in_single = !in_single;
-		else if (*cmd == '"' && !in_single)
-			in_double = !in_double;
-		else if (*cmd == ' ' && (in_single || in_double))
-			*cmd = 127;
+		ft_putstr_fd("failed to dup2\n", STDERR_FILENO);
+		close(in_fd);
+		close(out_fd);
+		exit(EXIT_FAILURE);
 	}
+	close(in_fd);
+	close(out_fd);
 }
 
-int	execute_cmd(t_pipex *pipex, char *cmd)
+void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 {
-	char	**splited_cmd;
+	char	**argv;
+	char	*path;
 
-	replace_space_within_quotes(cmd);
-	splited_cmd = ft_split(cmd, ' ');
-	if (!splited_cmd)
-	{
-		ft_putstr_fd("failed memory allocation for splited_cmd", STDERR_FILENO);
-		return (0);
-	}
-
-
-	return (1);
+	replace_space_within_quotes(raw_cmd);
+	argv = ft_split(raw_cmd, ' ');
+	if (!argv)
+		return (ft_putstr_fd("tokenization failed"\
+			, STDERR_FILENO), exit(EXIT_FAILURE));
+	cleanup_quotes_and_restore(argv);
+	path = parse_cmd_path(argv[0], pipex->envp);
+	if (!path)
+		return (ft_free_split(argv), ft_putstr_fd("command not found", \
+			STDERR_FILENO), exit(EXIT_FAILURE));
+	execve(path, argv, pipex->envp);
+	ft_putstr_fd("execve failed", STDERR_FILENO);
+	free(path);
+	ft_free_split(argv);
+	if (errno == EISDIR)
+		exit(126);
+	else if (errno == ENOENT)
+		exit(127);
+	else
+		exit(1);
 }
