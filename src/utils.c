@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 16:15:58 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 19:08:45 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	char	**argv;
 	char	*path;
 
+	if (*raw_cmd == '\0')
+		exit(EXIT_FAILURE);
 	replace_space_within_quotes(raw_cmd);
 	argv = ft_split(raw_cmd, ' ');
 	if (!argv)
