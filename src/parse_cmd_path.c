@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 14:17:16 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 15:57:51 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static char	*check_possible_candidates(char **dirs, const char *cmd)
 	return (NULL);
 }
 
-static char	*get_path_from_envp(const char **cmd, char **envp)
+static char	*get_path_from_envp(char **cmd, char **envp)
 {
 	char	*path;
 	char	*path_env;
@@ -92,7 +92,7 @@ static char	*get_path_from_envp(const char **cmd, char **envp)
 	return (path);
 }
 
-char	*parse_cmd_path(const char **cmd, char **envp)
+char	*parse_cmd_path(char **cmd, char **envp)
 {
 	char	*path;
 

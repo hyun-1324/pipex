@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:03:28 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 11:12:17 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/27 15:56:34 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define CMD2   3
 # define OUTFILE 4
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <errno.h>
 # include <sys/wait.h>
 # include <fcntl.h>
@@ -40,8 +40,8 @@ typedef struct s_pipex
 int		main(int argc, char **argv, char **envp);
 
 void	replace_space_within_quotes(char *raw);
-void	cleanup_quotes_and_restore(char **tokens);
-char	*parse_cmd_path(const char *cmd, char **envp);
+void	cleanup_quotes_and_restore_space(char **tokens);
+char	*parse_cmd_path(char **cmd, char **envp);
 void	redirect_io(int in_fd, int out_fd);
 void	execute_cmd(t_pipex *pipex, char *raw_cmd);
 
