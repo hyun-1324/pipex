@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/28 08:38:46 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:51:42 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	validate_quotes(char *cmd)
 		i++;
 	}
 	if (in_single || in_double)
-		return (ft_putstr_fd("unmatched quote\n", STDERR_FILENO), exit(1));
+	{
+		ft_putstr_fd("unmatched quote\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	ft_free_split(char **arr)
