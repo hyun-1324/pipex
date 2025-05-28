@@ -6,7 +6,11 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/28 10:09:53 by donheo           ###   ########.fr       */
+=======
+/*   Updated: 2025/05/28 08:36:08 by donheo           ###   ########.fr       */
+>>>>>>> d6dae786cbe5de9703076e438ad73801b677ee05
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +64,8 @@ static char	*check_possible_candidates(char **dirs, char **cmd)
 		{
 			ft_free_split(cmd);
 			ft_free_split(dirs);
-			ft_putstr_fd("memory allocation failed while building command path\n"\
-				, STDERR_FILENO);
+			ft_putstr_fd("memory allocation failed building command path\n",
+				STDERR_FILENO);
 			exit(EXIT_FAILURE);
 		}
 		if (access(candidate, X_OK) == 0)
@@ -112,7 +116,11 @@ char	*parse_cmd_path(char **cmd, char **envp)
 			return (path);
 		}
 		else
-			return (NULL);
+		{
+			ft_free_split(cmd);
+			perror("pipex");
+			exit(E_CMD_NOT_FOUND);
+		}
 	}
 	path = get_path_from_envp(cmd, envp);
 	return (path);
