@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:00:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 21:37:21 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:59:12 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_putstr_fd("invalid argument number\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	validate_quotes(argv);
+	validate_quotes(argv[CMD1]);
+	validate_quotes(argv[CMD2]);
 	init_pipex(&pipex, argc, argv, envp);
 	if (pipe(pipex.pipe) < 0)
 	{

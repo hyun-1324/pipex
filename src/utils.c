@@ -6,13 +6,13 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/28 07:25:03 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:01:29 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	validate_quotes(char **argv)
+void	validate_quotes(char *cmd)
 {
 	int	in_single;
 	int	in_double;
@@ -21,23 +21,16 @@ void	validate_quotes(char **argv)
 	in_single = 0;
 	in_double = 0;
 	i = 0;
-	while (*argv)
+	while (cmd[i])
 	{
-		while ((*argv)[i])
-		{
-			if ((*argv)[i] == '\'' && !in_double)
-				in_single = !in_single;
-			else if ((*argv)[i] == '"' && !in_single)
-				in_double = !in_double;
-			i++;
-		}
-		if (in_single || in_double)
-			return (ft_putstr_fd("unmatched quote\n", STDERR_FILENO), exit(1));
-		in_single = 0;
-		in_double = 0;
-		i = 0;
-		argv++;
+		if (cmd[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (cmd[i] == '"' && !in_single)
+			in_double = !in_double;
+		i++;
 	}
+	if (in_single || in_double)
+		return (ft_putstr_fd("unmatched quote\n", STDERR_FILENO), exit(1));
 }
 
 void	ft_free_split(char **arr)
