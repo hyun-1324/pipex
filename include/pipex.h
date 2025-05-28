@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:03:28 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 21:00:32 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:28:20 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define CMD1   2
 # define CMD2   3
 # define OUTFILE 4
+# define E_CMD_NOT_FOUND 127
 
 # include "../libft/libft.h"
 # include <errno.h>

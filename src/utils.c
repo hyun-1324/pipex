@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 20:59:49 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:34:16 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	ft_putstr_fd("execve failed\n", STDERR_FILENO);
 	free(path);
 	ft_free_split(argv);
-	if (errno == EISDIR)
+	if (errno == EISDIR || errno == EACCES)
 		exit(126);
 	else if (errno == ENOENT)
 		exit(127);
