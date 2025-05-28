@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:03:28 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/28 08:31:36 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:20:06 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@
 # include <errno.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <stdlib.h>
 # include <stdio.h>
 
 typedef struct s_pipex
