@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 22:03:28 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/28 06:28:20 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:13:17 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ typedef struct s_pipex
 void	validate_quotes(char **argv);
 int		main(int argc, char **argv, char **envp);
 
-void	replace_space_within_quotes(char *raw);
-void	cleanup_quotes_and_restore_space(char **tokens);
 char	**parse_cmd(char *raw_cmd);
 char	*parse_cmd_path(char **cmd, char **envp);
 void	redirect_io(int in_fd, int out_fd);
