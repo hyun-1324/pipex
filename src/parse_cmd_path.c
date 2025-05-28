@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:22:42 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 21:42:43 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:19:49 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ char	*parse_cmd_path(char **cmd, char **envp)
 			return (path);
 		}
 		else
-			return (NULL);
+		{
+			return (ft_free_split(cmd), perror("pipex"), \
+			exit(EXIT_FAILURE), NULL);
+		}
 	}
 	path = get_path_from_envp(cmd, envp);
 	return (path);
