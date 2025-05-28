@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:04:55 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 21:38:40 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:59:37 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,29 @@ void	replace_space_within_quotes(char *raw_cmd)
 {
 	int	in_single;
 	int	in_double;
+	int	i;
 
 	in_single = 0;
 	in_double = 0;
-	while (*raw_cmd)
+	i = 0;
+	while (raw_cmd[i])
 	{
-		if (*raw_cmd == '\'' && !in_double)
+		if (raw_cmd[i] == '\'' && !in_double)
 			in_single = !in_single;
-		else if (*raw_cmd == '"' && !in_single)
+		else if (raw_cmd[i] == '"' && !in_single)
 			in_double = !in_double;
-		else if (*raw_cmd == ' ' && (in_single || in_double))
-			*raw_cmd = 127;
-		raw_cmd++;
+		else if (raw_cmd[i] == '\\' && raw_cmd[i + 1] && raw_cmd[i + 1] == ' ')
+		{
+			raw_cmd[i] = 127;
+			if (raw_cmd[i + 2])
+				ft_memmove(&raw_cmd[i + 1], &raw_cmd[i + 2], ft_strlen(&raw_cmd[i + 2]) + 1);
+			else
+				raw_cmd[i + 1] = '\0';
+			i++;
+		}
+		else if (raw_cmd[i] == ' ' && (in_single || in_double))
+			raw_cmd[i] = 127;
+		i++;
 	}
 }
 
