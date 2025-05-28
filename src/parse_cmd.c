@@ -6,7 +6,7 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 09:04:55 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/28 07:12:39 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:28:31 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@ static void	cleanup_quotes_and_restore_space(char **argv)
 	}
 }
 
-static void	replace_space_with_del(char *raw_cmd)
+static void	replace_space_with_del(char *raw_cmd, int i)
 {
 	int	in_single;
 	int	in_double;
-	int	i;
 
 	in_single = 0;
 	in_double = 0;
-	i = 0;
 	while (raw_cmd[i])
 	{
 		if (raw_cmd[i] == '\'' && !in_double)
@@ -69,7 +67,8 @@ static void	replace_space_with_del(char *raw_cmd)
 		{
 			raw_cmd[i] = 127;
 			if (raw_cmd[i + 2])
-				ft_memmove(&raw_cmd[i + 1], &raw_cmd[i + 2], ft_strlen(&raw_cmd[i + 2]) + 1);
+				ft_memmove(&raw_cmd[i + 1], &raw_cmd[i + 2], \
+					ft_strlen(&raw_cmd[i + 2]) + 1);
 			else
 				raw_cmd[i + 1] = '\0';
 		}
@@ -86,7 +85,7 @@ char	**parse_cmd(char *raw_cmd)
 	if (*raw_cmd == '\0')
 		return (ft_putstr_fd("command not found\n"\
 			, STDERR_FILENO), exit(126), NULL);
-	replace_space_with_del(raw_cmd);
+	replace_space_with_del(raw_cmd, 0);
 	argv = ft_split(raw_cmd, ' ');
 	if (!argv)
 		return (ft_putstr_fd("tokenization failed\n"\
