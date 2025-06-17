@@ -6,13 +6,13 @@
 /*   By: donheo <donheo@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 10:19:35 by donheo            #+#    #+#             */
-/*   Updated: 2025/05/27 20:59:49 by donheo           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:32:37 by donheo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	validate_quotes(char **argv)
+void	validate_quotes(char *cmd)
 {
 	int	in_single;
 	int	in_double;
@@ -21,22 +21,18 @@ void	validate_quotes(char **argv)
 	in_single = 0;
 	in_double = 0;
 	i = 0;
-	while (*argv)
+	while (cmd[i])
 	{
-		while ((*argv)[i])
-		{
-			if ((*argv)[i] == '\'' && !in_double)
-				in_single = !in_single;
-			else if ((*argv)[i] == '"' && !in_single)
-				in_double = !in_double;
-			i++;
-		}
-		if (in_single || in_double)
-			return (ft_putstr_fd("unmatched quote\n", STDERR_FILENO), exit(1));
-		in_single = 0;
-		in_double = 0;
-		i = 0;
-		argv++;
+		if (cmd[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (cmd[i] == '"' && !in_single)
+			in_double = !in_double;
+		i++;
+	}
+	if (in_single || in_double)
+	{
+		ft_putstr_fd("unmatched quote\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -76,16 +72,19 @@ void	execute_cmd(t_pipex *pipex, char *raw_cmd)
 	argv = parse_cmd(raw_cmd);
 	path = parse_cmd_path(argv, pipex->envp);
 	if (!path)
-		return (ft_free_split(argv), ft_putstr_fd("command not found\n"\
-			, STDERR_FILENO), exit(127));
+	{
+		ft_free_split(argv);
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
+		exit(E_CMD_NOT_FOUND);
+	}
 	execve(path, argv, pipex->envp);
 	ft_putstr_fd("execve failed\n", STDERR_FILENO);
 	free(path);
 	ft_free_split(argv);
-	if (errno == EISDIR)
-		exit(126);
+	if (errno == EISDIR || errno == EACCES)
+		exit(E_CMD_NOT_EXECUTABLE);
 	else if (errno == ENOENT)
-		exit(127);
+		exit(E_CMD_NOT_FOUND);
 	else
-		exit(1);
+		exit(EXIT_FAILURE);
 }
